@@ -1,5 +1,11 @@
 # @elevenfiftynine/pulumi-aws
 
+## 0.0.7
+
+### Patch Changes
+
+- 899898d: Changed type to CommonJS
+
 ## 0.0.6
 
 ### Patch Changes

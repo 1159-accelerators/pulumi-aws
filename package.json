@@ -1,6 +1,6 @@
 {
   "name": "@elevenfiftynine/pulumi-aws",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "Defaults and missing functionality for Pulumi AWS",
   "main": "dist/index.js",
   "types": "types/index.d.ts",
@@ -32,7 +32,7 @@
     "dist",
     "types"
   ],
-  "type": "module",
+  "type": "commonjs",
   "devDependencies": {
     "@arethetypeswrong/cli": "^0.17.2",
     "@changesets/cli": "^2.27.11",
