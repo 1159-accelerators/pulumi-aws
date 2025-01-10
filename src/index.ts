@@ -1,2 +1,2 @@
 export { CasesDomain } from './casesDomain.js';
-export { ConnectCasesIntegration} from './connectCasesIntegration.js'
+export { ConnectCasesIntegration } from './connectCasesIntegration.js';
