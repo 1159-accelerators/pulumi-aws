@@ -1,5 +1,11 @@
 # @elevenfiftynine/pulumi-aws
 
+## 0.0.8
+
+### Patch Changes
+
+- 707c951: Added ConnectCasesIntegration
+
 ## 0.0.7
 
 ### Patch Changes
