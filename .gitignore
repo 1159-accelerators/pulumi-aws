@@ -1,0 +1,4 @@
+/npm_modules/
+/dist/
+
+.DS_Store
