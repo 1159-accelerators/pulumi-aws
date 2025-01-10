@@ -1,5 +1,12 @@
 # @elevenfiftynine/pulumi-aws
 
+## 0.0.6
+
+### Patch Changes
+
+- 9235a72: Downgraded tsc target and moduel
+- 81e40bd: Converted to commonjs for Pulumi compatability
+
 ## 0.0.5
 
 ### Patch Changes
