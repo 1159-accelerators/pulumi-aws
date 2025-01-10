@@ -68,7 +68,7 @@ class Provider implements pulumi.dynamic.ResourceProvider {
 
   async delete(id: string, props: Outputs) {
     try {
-      execSync(`aws connectcases delete-domain --domain-id ${props.domainId}`);
+      execSync(`aws connectcases delete-domain --domain-id ${props.domainId}`, {stdio: "ignore"});
     } catch (err) {
       throw new Error(`Error: ${err}`);
     }
