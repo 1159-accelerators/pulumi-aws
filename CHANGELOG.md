@@ -1,5 +1,11 @@
 # @elevenfiftynine/pulumi-aws
 
+## 0.0.5
+
+### Patch Changes
+
+- 4267d76: Typing issue
+
 ## 0.0.4
 
 ### Patch Changes
