@@ -1,0 +1,38 @@
+{
+  "name": "@elevenfiftynine/pulumi-aws",
+  "version": "0.0.1",
+  "description": "Defaults and missing functionality for Pulumi AWS",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc",
+    "ci": "npm run build",
+    "format": "prettier --write ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/1159-accelerators/pulumi-aws.git"
+  },
+  "keywords": [
+    "typescript",
+    "aws",
+    "pulumi"
+  ],
+  "author": "Justin Coker <justin.coker@1159.ai>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/1159-accelerators/pulumi-aws/issues"
+  },
+  "homepage": "https://github.com/1159-accelerators/pulumi-aws#readme",
+  "files": [
+    "dist"
+  ],
+  "type": "module",
+  "devDependencies": {
+    "prettier": "^3.4.2",
+    "typescript": "^5.7.3"
+  },
+  "dependencies": {
+    "@pulumi/aws": "^6.66.2",
+    "@pulumi/pulumi": "^3.145.0"
+  }
+}
