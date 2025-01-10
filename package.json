@@ -1,6 +1,6 @@
 {
   "name": "@elevenfiftynine/pulumi-aws",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Defaults and missing functionality for Pulumi AWS",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
