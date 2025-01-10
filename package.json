@@ -1,11 +1,12 @@
 {
   "name": "@elevenfiftynine/pulumi-aws",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Defaults and missing functionality for Pulumi AWS",
   "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
     "build": "tsc",
-    "ci": "npm run build && npm run check-format && npm run check-exports",
+    "ci": "npm run format && npm run build",
     "format": "prettier --write .",
     "check-format": "prettier --check .",
     "check-exports": "attw --pack . --ignore-rules=cjs-resolves-to-esm",
