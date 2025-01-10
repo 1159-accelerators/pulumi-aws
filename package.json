@@ -3,7 +3,7 @@
   "version": "0.0.4",
   "description": "Defaults and missing functionality for Pulumi AWS",
   "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "types": "types/index.d.ts",
   "scripts": {
     "build": "tsc",
     "ci": "npm run format && npm run build",
