@@ -29,7 +29,8 @@
   },
   "homepage": "https://github.com/1159-accelerators/pulumi-aws#readme",
   "files": [
-    "dist"
+    "dist",
+    "types"
   ],
   "type": "module",
   "devDependencies": {
