@@ -1,5 +1,11 @@
 # @elevenfiftynine/pulumi-aws
 
+## 0.0.9
+
+### Patch Changes
+
+- 6433ad5: Moved to AWS SDK V3
+
 ## 0.0.8
 
 ### Patch Changes
