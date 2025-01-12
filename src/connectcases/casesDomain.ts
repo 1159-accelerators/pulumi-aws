@@ -1,5 +1,10 @@
 import * as pulumi from '@pulumi/pulumi';
-import { execSync } from 'node:child_process';
+import {
+  ConnectCasesClient,
+  CreateDomainCommand,
+  DeleteDomainCommand,
+} from '@aws-sdk/client-connectcases';
+import { clientConfig } from '../config';
 
 export interface CasesDomainArgs {
   name: pulumi.Input<string>;
@@ -17,35 +22,41 @@ interface Outputs extends Inputs {
   domainStatus: string;
 }
 
+const client = new ConnectCasesClient(clientConfig());
+
 class Provider implements pulumi.dynamic.ResourceProvider {
-  private domainArn: string = '';
-  private domainId: string = '';
-  private domainStatus: string = '';
+  private domainArn: string | undefined = undefined;
+  private domainId: string | undefined = undefined;
+  private domainStatus: string | undefined = undefined;
 
   async create(inputs: Inputs): Promise<pulumi.dynamic.CreateResult> {
+    const input = { name: inputs.name };
     try {
-      const domainResult = JSON.parse(
-        execSync(
-          `aws connectcases create-domain --name ${inputs.name} --output json`,
-          { stdio: ['pipe', 'pipe', 'ignore'] },
-        ).toString(),
-      );
+      const response = await client.send(new CreateDomainCommand(input));
 
-      this.domainArn = domainResult.domainArn;
-      this.domainId = domainResult.domainId;
-      this.domainStatus = domainResult.domainStatus;
+      this.domainArn = response.domainArn;
+      this.domainId = response.domainId;
+      this.domainStatus = response.domainStatus;
+
+      if (!this.domainArn || !this.domainId || !this.domainStatus) {
+        const errorMessage = 'Return values are incorrect';
+        pulumi.log.error(errorMessage, undefined, undefined, true);
+        throw new Error(errorMessage);
+      }
     } catch (err) {
       throw new Error(`Error: ${err}`);
     }
 
+    const outs: Outputs = {
+      domainArn: this.domainArn,
+      domainId: this.domainId,
+      domainStatus: this.domainStatus,
+      ...inputs,
+    };
+
     return {
       id: `${inputs.name}-${inputs.instanceId}-cases-domain`,
-      outs: {
-        domainArn: this.domainArn,
-        domainId: this.domainId,
-        domainStatus: this.domainStatus,
-        ...inputs,
-      },
+      outs: outs,
     };
   }
 
@@ -67,10 +78,9 @@ class Provider implements pulumi.dynamic.ResourceProvider {
   }
 
   async delete(id: string, props: Outputs) {
+    const input = { domainId: props.domainId };
     try {
-      execSync(`aws connectcases delete-domain --domain-id ${props.domainId}`, {
-        stdio: 'ignore',
-      });
+      await client.send(new DeleteDomainCommand(input));
     } catch (err) {
       throw new Error(`Error: ${err}`);
     }
@@ -82,14 +92,21 @@ export class CasesDomain extends pulumi.dynamic.Resource {
   declare readonly domainId: pulumi.Output<string>;
   declare readonly domainStatus: pulumi.Output<string>;
 
-  declare readonly name: pulumi.Output<string>;
-  declare readonly instanceId: pulumi.Output<string>;
-
   constructor(
     name: string,
     args: CasesDomainArgs,
     opts?: pulumi.CustomResourceOptions,
   ) {
-    super(new Provider(), name, args, opts);
+    super(
+      new Provider(),
+      name,
+      {
+        domainArn: undefined,
+        domainId: undefined,
+        domainStatus: undefined,
+        ...args,
+      },
+      opts,
+    );
   }
 }
