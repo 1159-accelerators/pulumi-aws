@@ -1,5 +1,11 @@
 # @elevenfiftynine/pulumi-aws
 
+## 0.0.11
+
+### Patch Changes
+
+- 5e25f03: Change in auth provider
+
 ## 0.0.10
 
 ### Patch Changes
