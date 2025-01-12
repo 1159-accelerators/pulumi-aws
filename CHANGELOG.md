@@ -1,5 +1,11 @@
 # @elevenfiftynine/pulumi-aws
 
+## 0.0.10
+
+### Patch Changes
+
+- 58d6d60: Fix export issue
+
 ## 0.0.9
 
 ### Patch Changes
