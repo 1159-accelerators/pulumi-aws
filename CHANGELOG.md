@@ -1,5 +1,11 @@
 # @elevenfiftynine/pulumi-aws
 
+## 0.0.14
+
+### Patch Changes
+
+- 72a5135: All now use AWS SDK V3
+
 ## 0.0.13
 
 ### Patch Changes
