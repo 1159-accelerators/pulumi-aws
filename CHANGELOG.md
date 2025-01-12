@@ -1,5 +1,11 @@
 # @elevenfiftynine/pulumi-aws
 
+## 0.0.12
+
+### Patch Changes
+
+- 973ca40: AWS SDK scoping issue
+
 ## 0.0.11
 
 ### Patch Changes
