@@ -1,5 +1,11 @@
 # @elevenfiftynine/pulumi-aws
 
+## 0.0.13
+
+### Patch Changes
+
+- 6e13b91: Attempt to fix provider issue
+
 ## 0.0.12
 
 ### Patch Changes
