@@ -22,7 +22,7 @@ type IntegrationType =
   | 'CALL_TRANSFER_CONNECTOR'
   | 'COGNITO_USER_POOL';
 
-export interface ConnectIntegrationArgs {
+export interface IntegrationArgs {
   instanceId: pulumi.Input<string>;
   integrationArn: pulumi.Input<string>;
   integrationType: pulumi.Input<IntegrationType>;
@@ -39,11 +39,17 @@ interface Outputs extends Inputs {
   integrationAssociationArn: string;
 }
 
-const client = new ConnectClient(clientConfig());
+const getClient = () => new ConnectClient(clientConfig());
 
 class Provider implements pulumi.dynamic.ResourceProvider {
   private integrationAssociationId: string | undefined = undefined;
   private integrationAssociationArn: string | undefined = undefined;
+
+  private client: () => ConnectClient;
+
+  constructor(getClient: () => ConnectClient) {
+    this.client = getClient;
+  }
 
   async diff(
     id: string,
@@ -72,7 +78,7 @@ class Provider implements pulumi.dynamic.ResourceProvider {
       IntegrationType: inputs.integrationType,
     };
     try {
-      const response = await client.send(
+      const response = await this.client().send(
         new CreateIntegrationAssociationCommand(input),
       );
 
@@ -106,24 +112,24 @@ class Provider implements pulumi.dynamic.ResourceProvider {
       IntegrationAssociationId: props.integrationAssociationId,
     };
     try {
-      await client.send(new DeleteIntegrationAssociationCommand(input));
+      await this.client().send(new DeleteIntegrationAssociationCommand(input));
     } catch (err) {
       throw new Error(`Error: ${err}`);
     }
   }
 }
 
-export class ConnectIntegration extends pulumi.dynamic.Resource {
+export class Integration extends pulumi.dynamic.Resource {
   declare readonly integrationAssociationId: pulumi.Output<string>;
   declare readonly integrationAssociationArn: pulumi.Output<string>;
 
   constructor(
     name: string,
-    args: ConnectIntegrationArgs,
+    args: IntegrationArgs,
     opts?: pulumi.CustomResourceOptions,
   ) {
     super(
-      new Provider(),
+      new Provider(getClient),
       name,
       {
         integrationAssociationId: undefined,

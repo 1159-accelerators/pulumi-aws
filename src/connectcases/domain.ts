@@ -6,9 +6,8 @@ import {
 } from '@aws-sdk/client-connectcases';
 import { clientConfig } from '../config';
 
-export interface CasesDomainArgs {
+export interface DomainArgs {
   name: pulumi.Input<string>;
-  instanceId: pulumi.Input<string>;
 }
 
 interface Inputs {
@@ -22,17 +21,23 @@ interface Outputs extends Inputs {
   domainStatus: string;
 }
 
-const client = new ConnectCasesClient(clientConfig());
+const getClient = () => new ConnectCasesClient(clientConfig());
 
 class Provider implements pulumi.dynamic.ResourceProvider {
   private domainArn: string | undefined = undefined;
   private domainId: string | undefined = undefined;
   private domainStatus: string | undefined = undefined;
 
+  private client: () => ConnectCasesClient;
+
+  constructor(getClient: () => ConnectCasesClient) {
+    this.client = getClient;
+  }
+
   async create(inputs: Inputs): Promise<pulumi.dynamic.CreateResult> {
     const input = { name: inputs.name };
     try {
-      const response = await client.send(new CreateDomainCommand(input));
+      const response = await this.client().send(new CreateDomainCommand(input));
 
       this.domainArn = response.domainArn;
       this.domainId = response.domainId;
@@ -55,7 +60,7 @@ class Provider implements pulumi.dynamic.ResourceProvider {
     };
 
     return {
-      id: `${inputs.name}-${inputs.instanceId}-cases-domain`,
+      id: `${inputs.name}-cases-domain`,
       outs: outs,
     };
   }
@@ -80,25 +85,25 @@ class Provider implements pulumi.dynamic.ResourceProvider {
   async delete(id: string, props: Outputs) {
     const input = { domainId: props.domainId };
     try {
-      await client.send(new DeleteDomainCommand(input));
+      await this.client().send(new DeleteDomainCommand(input));
     } catch (err) {
       throw new Error(`Error: ${err}`);
     }
   }
 }
 
-export class CasesDomain extends pulumi.dynamic.Resource {
+export class Domain extends pulumi.dynamic.Resource {
   declare readonly domainArn: pulumi.Output<string>;
   declare readonly domainId: pulumi.Output<string>;
   declare readonly domainStatus: pulumi.Output<string>;
 
   constructor(
     name: string,
-    args: CasesDomainArgs,
+    args: DomainArgs,
     opts?: pulumi.CustomResourceOptions,
   ) {
     super(
-      new Provider(),
+      new Provider(getClient),
       name,
       {
         domainArn: undefined,

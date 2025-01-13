@@ -1,9 +1,4 @@
-import { CasesDomain } from './connectcases/casesDomain.js';
-import { ConnectIntegration } from './connect/connectIntegration.js';
-export declare const connect: {
-    ConnectIntegration: typeof ConnectIntegration;
-};
-export declare const connectcases: {
-    CasesDomain: typeof CasesDomain;
-};
+export { connectcases } from './connectcases/index.js';
+export { connect } from './connect/index.js';
+export { customerProfiles } from './customer-profiles/index.js';
 //# sourceMappingURL=index.d.ts.map

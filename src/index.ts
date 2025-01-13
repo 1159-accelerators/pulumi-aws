@@ -1,10 +1,3 @@
-import { CasesDomain } from './connectcases/casesDomain.js';
-import { ConnectIntegration } from './connect/connectIntegration.js';
-
-export const connect = {
-  ConnectIntegration,
-};
-
-export const connectcases = {
-  CasesDomain,
-};
+export { connectcases } from './connectcases/index.js';
+export { connect } from './connect/index.js';
+export { customerProfiles } from './customer-profiles/index.js';
