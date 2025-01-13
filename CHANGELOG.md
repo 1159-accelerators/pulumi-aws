@@ -1,5 +1,11 @@
 # @elevenfiftynine/pulumi-aws
 
+## 0.0.15
+
+### Patch Changes
+
+- eae1793: Added customer profiles domain
+
 ## 0.0.14
 
 ### Patch Changes

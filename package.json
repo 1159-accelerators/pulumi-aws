@@ -1,6 +1,6 @@
 {
   "name": "@elevenfiftynine/pulumi-aws",
-  "version": "0.0.14",
+  "version": "0.0.15",
   "description": "Defaults and missing functionality for Pulumi AWS",
   "main": "dist/index.js",
   "types": "types/index.d.ts",
@@ -42,6 +42,7 @@
   "dependencies": {
     "@aws-sdk/client-connect": "^3.726.1",
     "@aws-sdk/client-connectcases": "^3.726.1",
+    "@aws-sdk/client-customer-profiles": "^3.726.1",
     "@aws-sdk/credential-providers": "^3.726.1",
     "@pulumi/aws": "^6.66.2",
     "@pulumi/pulumi": "^3.145.0"
