@@ -1,5 +1,11 @@
 # @elevenfiftynine/pulumi-aws
 
+## 0.0.16
+
+### Patch Changes
+
+- 9165ca1: Added phone number-contact flow association
+
 ## 0.0.15
 
 ### Patch Changes
