@@ -6,24 +6,33 @@ import {
   UpdateDomainCommand,
 } from '@aws-sdk/client-customer-profiles';
 import { clientConfig } from '../config';
+import { v4 as uuidv4 } from 'uuid';
 
 export interface DomainArgs {
-  domainName: pulumi.Input<string>;
-  defaultEncryptionKey?: pulumi.Input<string>;
-  defaultExpirationDays?: pulumi.Input<number>;
+  name: pulumi.Input<string>;
+  encryptionKey?: pulumi.Input<string>;
+  expirationDays?: pulumi.Input<number>;
 }
 
-type Inputs = {
-  domainName: string;
+interface Inputs {
+  name: string;
+  encryptionKey?: string;
+  expirationDays?: number;
+}
+
+interface Outputs extends Inputs {
+  domainName?: string;
   defaultEncryptionKey?: string;
   defaultExpirationDays?: number;
-};
-
-type Outputs = Inputs;
+}
 
 const getClient = () => new CustomerProfilesClient(clientConfig());
 
 class Provider implements pulumi.dynamic.ResourceProvider {
+  private domainName: string | undefined = undefined;
+  private defaultEncryptionKey: string | undefined = undefined;
+  private defaultExpirationDays: number | undefined = undefined;
+
   private client: () => CustomerProfilesClient;
 
   constructor(getClient: () => CustomerProfilesClient) {
@@ -32,20 +41,29 @@ class Provider implements pulumi.dynamic.ResourceProvider {
 
   async create(inputs: Inputs): Promise<pulumi.dynamic.CreateResult> {
     const input = {
-      DomainName: inputs.domainName,
-      DefaultEncryptionKey: inputs.defaultEncryptionKey,
-      DefaultExpirationDays: inputs.defaultExpirationDays || 720,
+      DomainName: inputs.name,
+      DefaultEncryptionKey: inputs.encryptionKey,
+      DefaultExpirationDays: inputs.expirationDays || 720,
     };
     try {
-      await this.client().send(new CreateDomainCommand(input));
+      const response = await this.client().send(new CreateDomainCommand(input));
+
+      this.domainName = response.DomainName;
+      this.defaultEncryptionKey = response.DefaultEncryptionKey;
+      this.defaultExpirationDays = response.DefaultExpirationDays;
     } catch (err) {
       throw new Error(`Error: ${err}`);
     }
 
-    const outs: Outputs = inputs;
+    const outs: Outputs = {
+      domainName: this.domainName,
+      defaultEncryptionKey: this.defaultEncryptionKey,
+      defaultExpirationDays: this.defaultExpirationDays,
+      ...inputs,
+    };
 
     return {
-      id: `${inputs.domainName}-customer-profiles-domain`,
+      id: uuidv4(),
       outs: outs,
     };
   }
@@ -58,16 +76,16 @@ class Provider implements pulumi.dynamic.ResourceProvider {
     let changes = false;
 
     if (
-      olds.domainName !== news.domainName ||
-      olds.defaultEncryptionKey !== news.defaultEncryptionKey ||
-      olds.defaultExpirationDays !== news.defaultExpirationDays
+      olds.name !== news.name ||
+      olds.encryptionKey !== news.encryptionKey ||
+      olds.expirationDays !== news.expirationDays
     ) {
       changes = true;
     }
     return {
       changes,
       deleteBeforeReplace: true,
-      replaces: ['domainName'],
+      replaces: ['name'],
     };
   }
 
@@ -86,17 +104,24 @@ class Provider implements pulumi.dynamic.ResourceProvider {
     news: Inputs,
   ): Promise<pulumi.dynamic.UpdateResult> {
     const input = {
-      DomainName: olds.domainName,
-      DefaultEncryptionKey: news.defaultEncryptionKey,
-      DefaultExpirationDays: news.defaultExpirationDays || 720,
+      DomainName: olds.name,
+      DefaultEncryptionKey: news.encryptionKey,
+      DefaultExpirationDays: news.expirationDays || 720,
     };
     try {
-      await this.client().send(new UpdateDomainCommand(input));
+      const response = await this.client().send(new UpdateDomainCommand(input));
+
+      this.domainName = response.DomainName;
+      this.defaultEncryptionKey = response.DefaultEncryptionKey;
+      this.defaultExpirationDays = response.DefaultExpirationDays;
     } catch (err) {
       throw new Error(`Error: ${err}`);
     }
 
     const outs: Outputs = {
+      domainName: this.domainName,
+      defaultEncryptionKey: this.defaultEncryptionKey,
+      defaultExpirationDays: this.defaultExpirationDays,
       ...news,
     };
 
@@ -109,7 +134,7 @@ class Provider implements pulumi.dynamic.ResourceProvider {
 export class Domain extends pulumi.dynamic.Resource {
   declare readonly domainName: pulumi.Output<string>;
   declare readonly defaultEncryptionKey: pulumi.Output<string>;
-  declare readonly defaultExpirationDays: pulumi.Output<string>;
+  declare readonly defaultExpirationDays: pulumi.Output<number>;
 
   constructor(
     name: string,
@@ -123,6 +148,7 @@ export class Domain extends pulumi.dynamic.Resource {
         domainName: undefined,
         defaultEncryptionKey: undefined,
         defaultExpirationDays: undefined,
+        ...args,
       },
       opts,
     );
