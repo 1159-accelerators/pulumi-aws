@@ -1,5 +1,11 @@
 # @elevenfiftynine/pulumi-aws
 
+## 0.0.23
+
+### Patch Changes
+
+- e7192d0: Fixed outputs
+
 ## 0.0.22
 
 ### Patch Changes
