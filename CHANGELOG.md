@@ -1,5 +1,11 @@
 # @elevenfiftynine/pulumi-aws
 
+## 0.0.22
+
+### Patch Changes
+
+- b67a112: Object types
+
 ## 0.0.21
 
 ### Patch Changes
