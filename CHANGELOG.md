@@ -1,5 +1,11 @@
 # @elevenfiftynine/pulumi-aws
 
+## 0.0.17
+
+### Patch Changes
+
+- 7eeb1f7: Changes to customer profiles
+
 ## 0.0.16
 
 ### Patch Changes
