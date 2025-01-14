@@ -1,5 +1,11 @@
 # @elevenfiftynine/pulumi-aws
 
+## 0.0.18
+
+### Patch Changes
+
+- 04f216d: Test outputs
+
 ## 0.0.17
 
 ### Patch Changes
