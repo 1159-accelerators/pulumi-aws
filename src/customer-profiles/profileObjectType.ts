@@ -1,23 +1,24 @@
 import * as pulumi from '@pulumi/pulumi';
 import {
   CustomerProfilesClient,
-  CreateDomainCommand,
-  DeleteDomainCommand,
-  UpdateDomainCommand,
+  PutProfileObjectTypeCommand,
+  DeleteProfileObjectTypeCommand,
 } from '@aws-sdk/client-customer-profiles';
 import { clientConfig } from '../config';
 
-export interface DomainArgs {
+export interface ProfileObjectTypeArgs {
   domainName: pulumi.Input<string>;
-  defaultEncryptionKey?: pulumi.Input<string>;
-  defaultExpirationDays?: pulumi.Input<number>;
+  objectType: pulumi.Input<string>;
+  description: pulumi.Input<string>;
+  templateId?: pulumi.Input<string>;
 }
 
-type Inputs = {
+interface Inputs {
   domainName: string;
-  defaultEncryptionKey?: string;
-  defaultExpirationDays?: number;
-};
+  objectType: string;
+  description: string;
+  templateId?: string;
+}
 
 type Outputs = Inputs;
 
@@ -33,11 +34,12 @@ class Provider implements pulumi.dynamic.ResourceProvider {
   async create(inputs: Inputs): Promise<pulumi.dynamic.CreateResult> {
     const input = {
       DomainName: inputs.domainName,
-      DefaultEncryptionKey: inputs.defaultEncryptionKey,
-      DefaultExpirationDays: inputs.defaultExpirationDays || 720,
+      Description: inputs.description,
+      ObjectTypeName: inputs.objectType,
+      TemplateId: inputs.templateId,
     };
     try {
-      await this.client().send(new CreateDomainCommand(input));
+      await this.client().send(new PutProfileObjectTypeCommand(input));
     } catch (err) {
       throw new Error(`Error: ${err}`);
     }
@@ -45,7 +47,7 @@ class Provider implements pulumi.dynamic.ResourceProvider {
     const outs: Outputs = inputs;
 
     return {
-      id: `${inputs.domainName}-customer-profiles-domain`,
+      id: `${inputs.domainName}-${inputs.objectType}-object-type`,
       outs: outs,
     };
   }
@@ -59,57 +61,36 @@ class Provider implements pulumi.dynamic.ResourceProvider {
 
     if (
       olds.domainName !== news.domainName ||
-      olds.defaultEncryptionKey !== news.defaultEncryptionKey ||
-      olds.defaultExpirationDays !== news.defaultExpirationDays
+      olds.objectType !== news.objectType ||
+      olds.description !== news.description ||
+      olds.templateId !== news.templateId
     ) {
       changes = true;
     }
     return {
       changes,
       deleteBeforeReplace: true,
-      replaces: ['domainName'],
+      replaces: ['domainName', 'objectType', 'description', 'templateId'],
     };
   }
 
   async delete(id: string, props: Outputs) {
-    const input = { DomainName: props.domainName };
-    try {
-      await this.client().send(new DeleteDomainCommand(input));
-    } catch (err) {
-      throw new Error(`Error: ${err}`);
-    }
-  }
-
-  async update(
-    id: string,
-    olds: Outputs,
-    news: Inputs,
-  ): Promise<pulumi.dynamic.UpdateResult> {
     const input = {
-      DomainName: olds.domainName,
-      DefaultEncryptionKey: news.defaultEncryptionKey,
-      DefaultExpirationDays: news.defaultExpirationDays || 720,
+      DomainName: props.domainName,
+      ObjectTypeName: props.objectType,
     };
     try {
-      await this.client().send(new UpdateDomainCommand(input));
+      await this.client().send(new DeleteProfileObjectTypeCommand(input));
     } catch (err) {
       throw new Error(`Error: ${err}`);
     }
-
-    const outs: Outputs = {
-      ...news,
-    };
-
-    return {
-      outs: outs,
-    };
   }
 }
 
-export class Domain extends pulumi.dynamic.Resource {
+export class ProfileObjectType extends pulumi.dynamic.Resource {
   constructor(
     name: string,
-    args: DomainArgs,
+    args: ProfileObjectTypeArgs,
     opts?: pulumi.CustomResourceOptions,
   ) {
     super(new Provider(getClient), name, args, opts);

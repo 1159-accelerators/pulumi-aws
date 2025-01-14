@@ -1,22 +1,22 @@
 import * as pulumi from '@pulumi/pulumi';
 import {
   CustomerProfilesClient,
-  CreateDomainCommand,
-  DeleteDomainCommand,
-  UpdateDomainCommand,
+  PutIntegrationCommand,
+  DeleteIntegrationCommand,
 } from '@aws-sdk/client-customer-profiles';
 import { clientConfig } from '../config';
+import { v4 as uuidv4 } from 'uuid';
 
-export interface DomainArgs {
+export interface IntegrationArgs {
   domainName: pulumi.Input<string>;
-  defaultEncryptionKey?: pulumi.Input<string>;
-  defaultExpirationDays?: pulumi.Input<number>;
+  objectTypeName?: pulumi.Input<string>;
+  uri: pulumi.Input<string>;
 }
 
 type Inputs = {
   domainName: string;
-  defaultEncryptionKey?: string;
-  defaultExpirationDays?: number;
+  objectTypeName?: string;
+  uri: string;
 };
 
 type Outputs = Inputs;
@@ -33,11 +33,11 @@ class Provider implements pulumi.dynamic.ResourceProvider {
   async create(inputs: Inputs): Promise<pulumi.dynamic.CreateResult> {
     const input = {
       DomainName: inputs.domainName,
-      DefaultEncryptionKey: inputs.defaultEncryptionKey,
-      DefaultExpirationDays: inputs.defaultExpirationDays || 720,
+      ObjectTypeName: inputs.objectTypeName,
+      Uri: inputs.uri,
     };
     try {
-      await this.client().send(new CreateDomainCommand(input));
+      await this.client().send(new PutIntegrationCommand(input));
     } catch (err) {
       throw new Error(`Error: ${err}`);
     }
@@ -45,7 +45,7 @@ class Provider implements pulumi.dynamic.ResourceProvider {
     const outs: Outputs = inputs;
 
     return {
-      id: `${inputs.domainName}-customer-profiles-domain`,
+      id: uuidv4(),
       outs: outs,
     };
   }
@@ -59,57 +59,32 @@ class Provider implements pulumi.dynamic.ResourceProvider {
 
     if (
       olds.domainName !== news.domainName ||
-      olds.defaultEncryptionKey !== news.defaultEncryptionKey ||
-      olds.defaultExpirationDays !== news.defaultExpirationDays
+      olds.objectTypeName !== news.objectTypeName ||
+      olds.uri !== news.uri
     ) {
       changes = true;
     }
     return {
       changes,
       deleteBeforeReplace: true,
-      replaces: ['domainName'],
+      replaces: ['domainName', 'objectTypeName', 'uri'],
     };
   }
 
   async delete(id: string, props: Outputs) {
-    const input = { DomainName: props.domainName };
+    const input = { DomainName: props.domainName, Uri: props.uri };
     try {
-      await this.client().send(new DeleteDomainCommand(input));
+      await this.client().send(new DeleteIntegrationCommand(input));
     } catch (err) {
       throw new Error(`Error: ${err}`);
     }
-  }
-
-  async update(
-    id: string,
-    olds: Outputs,
-    news: Inputs,
-  ): Promise<pulumi.dynamic.UpdateResult> {
-    const input = {
-      DomainName: olds.domainName,
-      DefaultEncryptionKey: news.defaultEncryptionKey,
-      DefaultExpirationDays: news.defaultExpirationDays || 720,
-    };
-    try {
-      await this.client().send(new UpdateDomainCommand(input));
-    } catch (err) {
-      throw new Error(`Error: ${err}`);
-    }
-
-    const outs: Outputs = {
-      ...news,
-    };
-
-    return {
-      outs: outs,
-    };
   }
 }
 
-export class Domain extends pulumi.dynamic.Resource {
+export class Integration extends pulumi.dynamic.Resource {
   constructor(
     name: string,
-    args: DomainArgs,
+    args: IntegrationArgs,
     opts?: pulumi.CustomResourceOptions,
   ) {
     super(new Provider(getClient), name, args, opts);

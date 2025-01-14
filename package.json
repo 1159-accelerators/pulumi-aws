@@ -45,6 +45,7 @@
     "@aws-sdk/client-customer-profiles": "^3.726.1",
     "@aws-sdk/credential-providers": "^3.726.1",
     "@pulumi/aws": "^6.66.2",
-    "@pulumi/pulumi": "^3.145.0"
+    "@pulumi/pulumi": "^3.145.0",
+    "uuid": "^11.0.5"
   }
 }
