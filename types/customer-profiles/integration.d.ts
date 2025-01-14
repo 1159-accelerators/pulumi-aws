@@ -5,6 +5,9 @@ export interface IntegrationArgs {
     uri: pulumi.Input<string>;
 }
 export declare class Integration extends pulumi.dynamic.Resource {
+    readonly domainName: pulumi.Output<string>;
+    readonly objectTypeName: pulumi.Output<string>;
+    readonly uri: pulumi.Output<string>;
     constructor(name: string, args: IntegrationArgs, opts?: pulumi.CustomResourceOptions);
 }
 //# sourceMappingURL=integration.d.ts.map

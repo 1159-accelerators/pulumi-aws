@@ -8,6 +8,9 @@ export interface IntegrationArgs {
 export declare class Integration extends pulumi.dynamic.Resource {
     readonly integrationAssociationId: pulumi.Output<string>;
     readonly integrationAssociationArn: pulumi.Output<string>;
+    readonly instanceId: pulumi.Output<string>;
+    readonly integrationArn: pulumi.Output<string>;
+    readonly integrationType: pulumi.Output<IntegrationType>;
     constructor(name: string, args: IntegrationArgs, opts?: pulumi.CustomResourceOptions);
 }
 export {};

@@ -82,6 +82,10 @@ class Provider implements pulumi.dynamic.ResourceProvider {
 }
 
 export class Integration extends pulumi.dynamic.Resource {
+  declare readonly domainName: pulumi.Output<string>;
+  declare readonly objectTypeName: pulumi.Output<string>;
+  declare readonly uri: pulumi.Output<string>;
+
   constructor(
     name: string,
     args: IntegrationArgs,

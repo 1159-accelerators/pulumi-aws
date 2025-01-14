@@ -5,6 +5,9 @@ export interface PhoneNumberContactFlowArgs {
     contactFlowId: pulumi.Input<string>;
 }
 export declare class PhoneNumberContactFlow extends pulumi.dynamic.Resource {
+    readonly phoneNumberId: pulumi.Output<string>;
+    readonly instanceId: pulumi.Output<string>;
+    readonly contactFlowId: pulumi.Output<string>;
     constructor(name: string, args: PhoneNumberContactFlowArgs, opts?: pulumi.CustomResourceOptions);
 }
 //# sourceMappingURL=phoneNumberContactFlow.d.ts.map

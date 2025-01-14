@@ -9,14 +9,14 @@ import { v4 as uuidv4 } from 'uuid';
 
 export interface ProfileObjectTypeArgs {
   domainName: pulumi.Input<string>;
-  objectType: pulumi.Input<string>;
+  objectTypeName: pulumi.Input<string>;
   description: pulumi.Input<string>;
   templateId?: pulumi.Input<string>;
 }
 
 interface Inputs {
   domainName: string;
-  objectType: string;
+  objectTypeName: string;
   description: string;
   templateId?: string;
 }
@@ -36,11 +36,13 @@ class Provider implements pulumi.dynamic.ResourceProvider {
     const input = {
       DomainName: inputs.domainName,
       Description: inputs.description,
-      ObjectTypeName: inputs.objectType,
+      ObjectTypeName: inputs.objectTypeName,
       TemplateId: inputs.templateId,
     };
     try {
-      await this.client().send(new PutProfileObjectTypeCommand(input));
+      const response = await this.client().send(
+        new PutProfileObjectTypeCommand(input),
+      );
     } catch (err) {
       throw new Error(`Error: ${err}`);
     }
@@ -62,7 +64,7 @@ class Provider implements pulumi.dynamic.ResourceProvider {
 
     if (
       olds.domainName !== news.domainName ||
-      olds.objectType !== news.objectType ||
+      olds.objectTypeName !== news.objectTypeName ||
       olds.description !== news.description ||
       olds.templateId !== news.templateId
     ) {
@@ -71,14 +73,14 @@ class Provider implements pulumi.dynamic.ResourceProvider {
     return {
       changes,
       deleteBeforeReplace: true,
-      replaces: ['domainName', 'objectType', 'description', 'templateId'],
+      replaces: ['domainName', 'objectTypeName', 'description', 'templateId'],
     };
   }
 
   async delete(id: string, props: Outputs) {
     const input = {
       DomainName: props.domainName,
-      ObjectTypeName: props.objectType,
+      ObjectTypeName: props.objectTypeName,
     };
     try {
       await this.client().send(new DeleteProfileObjectTypeCommand(input));
@@ -90,7 +92,7 @@ class Provider implements pulumi.dynamic.ResourceProvider {
 
 export class ProfileObjectType extends pulumi.dynamic.Resource {
   declare readonly domainName: pulumi.Output<string>;
-  declare readonly objectType: pulumi.Output<string>;
+  declare readonly objectTypeName: pulumi.Output<string>;
   declare readonly description: pulumi.Output<string>;
   declare readonly templateId: pulumi.Output<string>;
 
@@ -99,16 +101,6 @@ export class ProfileObjectType extends pulumi.dynamic.Resource {
     args: ProfileObjectTypeArgs,
     opts?: pulumi.CustomResourceOptions,
   ) {
-    super(
-      new Provider(getClient),
-      name,
-      {
-        domainName: undefined,
-        objectType: undefined,
-        description: undefined,
-        templateId: undefined,
-      },
-      opts,
-    );
+    super(new Provider(getClient), name, args, opts);
   }
 }

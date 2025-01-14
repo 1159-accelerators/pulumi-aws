@@ -123,6 +123,10 @@ export class Integration extends pulumi.dynamic.Resource {
   declare readonly integrationAssociationId: pulumi.Output<string>;
   declare readonly integrationAssociationArn: pulumi.Output<string>;
 
+  declare readonly instanceId: pulumi.Output<string>;
+  declare readonly integrationArn: pulumi.Output<string>;
+  declare readonly integrationType: pulumi.Output<IntegrationType>;
+
   constructor(
     name: string,
     args: IntegrationArgs,

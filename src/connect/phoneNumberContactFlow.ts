@@ -88,6 +88,10 @@ class Provider implements pulumi.dynamic.ResourceProvider {
 }
 
 export class PhoneNumberContactFlow extends pulumi.dynamic.Resource {
+  declare readonly phoneNumberId: pulumi.Output<string>;
+  declare readonly instanceId: pulumi.Output<string>;
+  declare readonly contactFlowId: pulumi.Output<string>;
+
   constructor(
     name: string,
     args: PhoneNumberContactFlowArgs,

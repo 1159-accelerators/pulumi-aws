@@ -5,6 +5,7 @@ import {
   DeleteDomainCommand,
 } from '@aws-sdk/client-connectcases';
 import { clientConfig } from '../config';
+import { v4 as uuidv4 } from 'uuid';
 
 export interface DomainArgs {
   name: pulumi.Input<string>;
@@ -12,7 +13,6 @@ export interface DomainArgs {
 
 interface Inputs {
   name: string;
-  instanceId: string;
 }
 
 interface Outputs extends Inputs {
@@ -60,7 +60,7 @@ class Provider implements pulumi.dynamic.ResourceProvider {
     };
 
     return {
-      id: `${inputs.name}-cases-domain`,
+      id: uuidv4(),
       outs: outs,
     };
   }
@@ -72,13 +72,13 @@ class Provider implements pulumi.dynamic.ResourceProvider {
   ): Promise<pulumi.dynamic.DiffResult> {
     let changes = false;
 
-    if (olds.name !== news.name || olds.instanceId !== news.instanceId) {
+    if (olds.name !== news.name) {
       changes = true;
     }
     return {
       changes,
       deleteBeforeReplace: true,
-      replaces: ['name', 'instanceId'],
+      replaces: ['name'],
     };
   }
 
@@ -96,6 +96,8 @@ export class Domain extends pulumi.dynamic.Resource {
   declare readonly domainArn: pulumi.Output<string>;
   declare readonly domainId: pulumi.Output<string>;
   declare readonly domainStatus: pulumi.Output<string>;
+
+  declare readonly name: pulumi.Output<string>;
 
   constructor(
     name: string,

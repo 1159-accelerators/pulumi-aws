@@ -1,8 +1,8 @@
 import * as pulumi from '@pulumi/pulumi';
 export interface DomainArgs {
-    name: pulumi.Input<string>;
-    encryptionKey?: pulumi.Input<string>;
-    expirationDays?: pulumi.Input<number>;
+    domainName: pulumi.Input<string>;
+    defaultEncryptionKey?: pulumi.Input<string>;
+    defaultExpirationDays?: pulumi.Input<number>;
 }
 export declare class Domain extends pulumi.dynamic.Resource {
     readonly domainName: pulumi.Output<string>;
