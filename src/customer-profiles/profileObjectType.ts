@@ -5,6 +5,7 @@ import {
   DeleteProfileObjectTypeCommand,
 } from '@aws-sdk/client-customer-profiles';
 import { clientConfig } from '../config';
+import { v4 as uuidv4 } from 'uuid';
 
 export interface ProfileObjectTypeArgs {
   domainName: pulumi.Input<string>;
@@ -47,7 +48,7 @@ class Provider implements pulumi.dynamic.ResourceProvider {
     const outs: Outputs = inputs;
 
     return {
-      id: `${inputs.domainName}-${inputs.objectType}-object-type`,
+      id: uuidv4(),
       outs: outs,
     };
   }
@@ -88,11 +89,26 @@ class Provider implements pulumi.dynamic.ResourceProvider {
 }
 
 export class ProfileObjectType extends pulumi.dynamic.Resource {
+  declare readonly domainName: pulumi.Output<string>;
+  declare readonly objectType: pulumi.Output<string>;
+  declare readonly description: pulumi.Output<string>;
+  declare readonly templateId: pulumi.Output<string>;
+
   constructor(
     name: string,
     args: ProfileObjectTypeArgs,
     opts?: pulumi.CustomResourceOptions,
   ) {
-    super(new Provider(getClient), name, args, opts);
+    super(
+      new Provider(getClient),
+      name,
+      {
+        domainName: undefined,
+        objectType: undefined,
+        description: undefined,
+        templateId: undefined,
+      },
+      opts,
+    );
   }
 }

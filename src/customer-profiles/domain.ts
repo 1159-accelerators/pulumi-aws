@@ -107,11 +107,24 @@ class Provider implements pulumi.dynamic.ResourceProvider {
 }
 
 export class Domain extends pulumi.dynamic.Resource {
+  declare readonly domainName: pulumi.Output<string>;
+  declare readonly defaultEncryptionKey: pulumi.Output<string>;
+  declare readonly defaultExpirationDays: pulumi.Output<string>;
+
   constructor(
     name: string,
     args: DomainArgs,
     opts?: pulumi.CustomResourceOptions,
   ) {
-    super(new Provider(getClient), name, args, opts);
+    super(
+      new Provider(getClient),
+      name,
+      {
+        domainName: undefined,
+        defaultEncryptionKey: undefined,
+        defaultExpirationDays: undefined,
+      },
+      opts,
+    );
   }
 }

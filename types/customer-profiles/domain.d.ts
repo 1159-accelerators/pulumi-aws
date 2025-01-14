@@ -5,6 +5,9 @@ export interface DomainArgs {
     defaultExpirationDays?: pulumi.Input<number>;
 }
 export declare class Domain extends pulumi.dynamic.Resource {
+    readonly domainName: pulumi.Output<string>;
+    readonly defaultEncryptionKey: pulumi.Output<string>;
+    readonly defaultExpirationDays: pulumi.Output<string>;
     constructor(name: string, args: DomainArgs, opts?: pulumi.CustomResourceOptions);
 }
 //# sourceMappingURL=domain.d.ts.map

@@ -6,6 +6,10 @@ export interface ProfileObjectTypeArgs {
     templateId?: pulumi.Input<string>;
 }
 export declare class ProfileObjectType extends pulumi.dynamic.Resource {
+    readonly domainName: pulumi.Output<string>;
+    readonly objectType: pulumi.Output<string>;
+    readonly description: pulumi.Output<string>;
+    readonly templateId: pulumi.Output<string>;
     constructor(name: string, args: ProfileObjectTypeArgs, opts?: pulumi.CustomResourceOptions);
 }
 //# sourceMappingURL=profileObjectType.d.ts.map
