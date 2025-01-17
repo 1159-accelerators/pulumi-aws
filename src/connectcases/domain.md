@@ -1,7 +1,5 @@
 # Domain
 
-[Connect Cases](/src/connectcases/) > Domain
-
 Creates a domain, which is a container for all case data, such as cases, fields, templates and layouts. Each Amazon Connect instance can be associated with only one Cases domain. This will not associate your connect instance to Cases domain. Instead, use [Integration](/src/connect/integration.md).
 
 ## Example Usage
@@ -26,7 +24,8 @@ const casesDomain = new elevenfiftynine_aws.connectcases.Domain(
 | **name** | string | The name for your Cases domain. It must be unique for your Amazon Web Services account |
 
 ### Outputs
-All [input](/src/connectcases/domain.md#L22) properties are implicitly available as output properties. Additionally, the Domain resource produces the following output properties:
+
+All [input](/src/connectcases/domain.md#L20) properties are implicitly available as output properties. Additionally, the Domain resource produces the following output properties:
 | Name | Type | Description |
 | --- | --- | --- |
 | **domainArn** | string | The Amazon Resource Name (ARN) for the Cases domain |

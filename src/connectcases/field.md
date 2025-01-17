@@ -24,16 +24,17 @@ const acknowledgedField = new elevenfiftynine_aws.connectcases.Field(
 
 ### Inputs
 
-| Name                       | Type                                                                                                                                          | Description                                                                       |
-| -------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------- |
-| **domainId**               | string &#124; undefined                                                                                                                       | The unique identifier of the Cases domain.                                        |
-| **name**                   | string &#124; undefined                                                                                                                       | The name of the field.                                                            |
-| **type**                   | [FieldType](https://docs.aws.amazon.com/AWSJavaScriptSDK/v3/latest/Package/-aws-sdk-client-connectcases/Variable/FieldType/) &#124; undefined | Defines the data type, some system constraints, and default display of the field. |
-| **description** `optional` | string &#124; undefined                                                                                                                       | The description of the field.                                                     |
+| Name | Type | Description |
+| --- | --- | --- |
+| **domainId** | string | The unique identifier of the Cases domain. |
+| **name** | string | The name of the field. |
+| **type** | [FieldType](https://docs.aws.amazon.com/AWSJavaScriptSDK/v3/latest/Package/-aws-sdk-client-connectcases/Variable/FieldType/) | Defines the data type, some system constraints, and default display of the field. |
+| **description** `optional` | string &#124; undefined | The description of the field. |
 
 ### Outputs
+
 All [input](/src/connectcases/field.md#L25) properties are implicitly available as output properties. Additionally, the Field resource produces the following output properties:
 | Name | Type | Description |
-| -------- | ------ | -------------------------------------------------------------------------------------- |
+| --- | --- | --- |
 | **fieldArn** | string &#124; undefined | The Amazon Resource Name (ARN) of the field. |
 | **fieldId** | string &#124; undefined | The unique identifier of a field. |
