@@ -4,11 +4,17 @@ A collection of custom components created by [11:59](https://1159.ai) for items 
 
 ## Installation
 
-#### NPM
-`npm install @elevenfiftynine/pulumi-aws`
+NPM
 
-#### Yarn
-`yarn add @elevenfiftynine/pulumi-aws`
+```
+npm install @elevenfiftynine/pulumi-aws
+```
+
+Yarn
+
+```
+yarn add @elevenfiftynine/pulumi-aws
+```
 
 ## Services
 
