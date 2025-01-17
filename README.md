@@ -2,6 +2,14 @@
 
 A collection of custom components created by [11:59](https://1159.ai) for items not covered by existing Pulumi providers. Most components use the [AWS SDK for JavaScript (V3)](https://docs.aws.amazon.com/AWSJavaScriptSDK/v3/latest/) under the hood, and have been created using Pulumi's [Dynamic Resource Provider](https://www.pulumi.com/docs/iac/concepts/resources/dynamic-providers/) construct.
 
+## Installation
+
+#### NPM
+`npm install @elevenfiftynine/pulumi-aws`
+
+#### Yarn
+`yarn add @elevenfiftynine/pulumi-aws`
+
 ## Services
 
 | Service | Description
