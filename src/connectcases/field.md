@@ -1,7 +1,5 @@
 # Field
 
-[Connect Cases](/src/connectcases/) > Field
-
 Creates a field in the Cases domain. This field is used to define the case object model (that is, defines what data can be captured on cases) in a Cases domain.
 
 ## Example Usage
@@ -33,7 +31,7 @@ const acknowledgedField = new elevenfiftynine_aws.connectcases.Field(
 
 ### Outputs
 
-All [input](/src/connectcases/field.md#L25) properties are implicitly available as output properties. Additionally, the Field resource produces the following output properties:
+All **input** properties are implicitly available as output properties. Additionally, the Field resource produces the following output properties:
 | Name | Type | Description |
 | --- | --- | --- |
 | **fieldArn** | string &#124; undefined | The Amazon Resource Name (ARN) of the field. |

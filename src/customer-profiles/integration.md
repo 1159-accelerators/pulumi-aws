@@ -24,7 +24,7 @@ const connectIntegration = new elevenfiftynine_aws.customerProfiles.Integration(
 | Name | Type | Description |
 | --- | --- | --- |
 | **domainName** | string | The unique name of the domain. |
-| **uri** | string &#124; undefined | The URI of the S3 bucket, Connect instance, or any other type of data source. |
+| **uri** | string | The URI of the S3 bucket, Connect instance, or any other type of data source. |
 | **objectTypeName** `optional` | string &#124; undefined | The name of the profile object type. |
 
 ### Outputs

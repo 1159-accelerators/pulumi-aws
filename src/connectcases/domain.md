@@ -25,7 +25,7 @@ const casesDomain = new elevenfiftynine_aws.connectcases.Domain(
 
 ### Outputs
 
-All [input](/src/connectcases/domain.md#L20) properties are implicitly available as output properties. Additionally, the Domain resource produces the following output properties:
+All **input** properties are implicitly available as output properties. Additionally, the Domain resource produces the following output properties:
 | Name | Type | Description |
 | --- | --- | --- |
 | **domainArn** | string | The Amazon Resource Name (ARN) for the Cases domain |
