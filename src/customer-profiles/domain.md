@@ -29,4 +29,4 @@ const profilesDomain = new elevenfiftynine_aws.customerProfiles.Domain(
 
 ### Outputs
 
-All [input](/src/customer-profiles/domain.md#L22) properties are implicitly available as output properties.
+All **input** properties are implicitly available as output properties.
